@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://www.fugolini.com/sitemap.xml
+Sitemap: https://fugolini.com/sitemap.xml
