@@ -24,9 +24,9 @@
 
   const dpr = window.devicePixelRatio || 1;
   const fs = 18;             // glyph size px
-  const colW = 155;           // column spacing px (larger -> sparser)
-  const ROWS_PER_SEC = 5.2;  // fall speed, rows per second
-  const MUTATE = 0.96;      // higher chance to change than before (was .992)
+  const colW = 110;           // column spacing px (larger -> sparser)
+  const ROWS_PER_SEC = 4.2;  // fall speed, rows per second
+  const MUTATE = 0.97;      // higher chance to change than before (was .992)
 
   let W = 0, H = 0, cols = 0, ctx = null, streams = [], last = 0, raf = 0;
 
