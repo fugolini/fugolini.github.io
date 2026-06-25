@@ -1,0 +1,233 @@
+/* ============================================================
+   Filippo Ugolini — shared stylesheet
+   Display & body: Zilla Slab (body at weight 500)
+   Labels/nav:     JetBrains Mono
+   Chinese rain:   Noto Serif TC (Song / woodblock style)
+   Color: pale ivory paper, deep ink-blue, garnet accent.
+   ============================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&family=Noto+Serif+TC:wght@400;500&display=swap');
+
+:root {
+  --paper:    #f7f4ec;
+  --ink:      #15243b;
+  --ink-soft: #3a4a63;
+  --garnet:   #6e1f23;
+  --rule:     #d9d2c2;
+  --muted:    #6b6359;
+  --max:      52rem;
+}
+
+* { box-sizing: border-box; }
+html { font-size: 17px; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: "Zilla Slab", Georgia, serif;
+  font-weight: 500;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+.wrap { max-width: var(--max); margin: 0 auto; padding: 0 1.5rem; }
+
+/* ---------- Header / nav ---------- */
+.site-header {
+  position: relative;
+  z-index: 1;
+}
+.site-header::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background: var(--paper);
+  -webkit-mask:
+    linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
+    linear-gradient(to bottom, #000 0, #000 calc(100% - 40px), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask:
+    linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
+    linear-gradient(to bottom, #000 0, #000 calc(100% - 40px), transparent 100%);
+  mask-composite: intersect;
+}
+.site-header .wrap {
+  display: flex; align-items: baseline; justify-content: space-between;
+  padding: 1.4rem 1.5rem; flex-wrap: wrap; gap: 0.6rem;
+}
+.site-name {
+  font-family: "Zilla Slab", serif; font-weight: 700;
+  font-size: 1.3rem; letter-spacing: -0.01em;
+  color: var(--ink); text-decoration: none; border: none;
+}
+.site-nav {
+  display: flex; gap: 1.6rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.8rem; letter-spacing: 0.04em; text-transform: lowercase;
+}
+.site-nav a {
+  position: relative; color: var(--ink-soft); text-decoration: none;
+  border: none; padding-bottom: 4px; transition: color .18s;
+}
+.site-nav a::after {
+  content: ""; position: absolute; left: 0; bottom: 0;
+  height: 2px; width: 0; background: var(--garnet);
+  transition: width .25s ease;
+}
+.site-nav a:hover { color: var(--ink); }
+.site-nav a:hover::after { width: 100%; }
+.site-nav a[aria-current="page"] { color: var(--ink); }
+.site-nav a[aria-current="page"]::after { width: 100%; background: var(--ink); }
+
+/* ---------- Type scale ---------- */
+h1 {
+  font-family: "Zilla Slab", serif; font-weight: 700;
+  font-size: clamp(2.2rem, 5vw, 3.1rem); line-height: 1.08;
+  letter-spacing: -0.015em; margin: 0 0 0.7rem;
+}
+h2 {
+  font-family: "Zilla Slab", serif; font-weight: 600;
+  font-size: 1.55rem; letter-spacing: -0.01em; margin: 2.6rem 0 0.8rem;
+}
+p { margin: 0 0 1.1rem; }
+
+a {
+  color: var(--garnet); text-decoration: none;
+  border-bottom: 1px solid rgba(110,31,35,.35); transition: border-color .18s;
+}
+a:hover { border-bottom-color: var(--garnet); }
+
+.eyebrow {
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.72rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--garnet); margin-bottom: 1.3rem; display: block;
+}
+
+main { padding: 0 0 1rem; }
+.lead { font-size: 1.2rem; font-weight: 500; }
+.muted { color: var(--ink-soft); }
+ul.clean { padding-left: 1.1rem; }
+ul.clean li { margin-bottom: 0.5rem; }
+
+
+/* ---------- Content panels floating above the rain ---------- */
+/* A solid ivory fill whose RECTANGULAR edges fade out on every side,
+   via a pseudo-element with a four-way linear-gradient mask.
+   The radial-gradient approach was abandoned: it makes an ellipse,
+   which is what produced the hard "line" at top and bottom. */
+.panel { position: relative; padding: 3.4rem 4rem; }
+.panel::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--paper);
+  /* fade the fill to transparent in a 48px margin on each edge */
+  -webkit-mask:
+    linear-gradient(to right,  transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask:
+    linear-gradient(to right,  transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
+    linear-gradient(to bottom, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+  mask-composite: intersect;
+}
+
+/* ---------- HERO ---------- */
+.hero { position: relative; }
+.page-rain {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  width: 100%; height: 100vh;
+  z-index: -1;
+  pointer-events: none;
+}
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 2.5rem;
+  align-items: center;
+  padding-top: 3.5rem; padding-bottom: 3.5rem;
+}
+.hero-text h1 { color: var(--ink); }
+
+.hero-photo {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  background: #e7e0d0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+.hero-photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+}
+.hero-photo .photo-placeholder {
+  display: none;
+}
+.hero-photo.is-empty img { display: none; }
+.hero-photo.is-empty .photo-placeholder {
+  display: flex; align-items: center; justify-content: center;
+  position: absolute; inset: 0;
+  font-family: "JetBrains Mono", monospace; font-size: 0.65rem;
+  letter-spacing: 0.1em; text-transform: uppercase; color: #9a9183;
+}
+
+/* ---------- SECTION INDEX ---------- */
+.index { margin-top: 1rem; padding-bottom: 1rem; }
+.index a.row {
+  display: block; padding: 1.3rem 0; border-bottom: 1px solid var(--rule);
+  color: var(--ink); border-bottom-color: var(--rule);
+}
+.index a.row:first-child { border-top: 1px solid var(--rule); }
+.index a.row:hover { background: rgba(21,36,59,.025); }
+.index .row-title {
+  font-family: "Zilla Slab", serif; font-weight: 600; font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+.index .row-title .arrow { color: var(--garnet); }
+.index .row-desc { color: var(--ink-soft); font-size: 1rem; font-weight: 400; }
+
+code, pre { font-family: "JetBrains Mono", monospace; font-size: 0.85em; }
+
+/* ---------- FOOTER ---------- */
+.site-footer {
+  position: relative;
+  z-index: 1;
+  margin-top: 4rem;
+  padding: 2rem 0 3rem;
+  font-family: "JetBrains Mono", monospace;
+  font-size: 0.78rem; letter-spacing: 0.03em; color: var(--muted);
+}
+.site-footer::before {
+  content: "";
+  position: absolute; inset: 0; z-index: -1;
+  background: var(--paper);
+  -webkit-mask:
+    linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
+    linear-gradient(to top, #000 0, #000 calc(100% - 40px), transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask:
+    linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
+    linear-gradient(to top, #000 0, #000 calc(100% - 40px), transparent 100%);
+  mask-composite: intersect;
+}
+.site-footer .wrap { padding: 0 1.5rem; text-align: center; }
+.site-footer a { color: var(--muted); border: none; }
+.site-footer a:hover { color: var(--ink); }
+.copyleft { display: inline-block; }
+
+/* ---------- Inner pages content width ---------- */
+main.page-body { padding-top: 3.5rem; }
+
+/* ---------- Responsive ---------- */
+@media (max-width: 46rem) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+
+  }
+  .hero-photo { max-width: 200px; }
+}
+@media (max-width: 34rem) {
+  .hero-inner { }
+  .site-header .wrap { flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
