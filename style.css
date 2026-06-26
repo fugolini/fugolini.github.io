@@ -2,13 +2,15 @@
    Filippo Ugolini — shared stylesheet
    Display & body: Zilla Slab (body at weight 500)
    Labels/nav:     JetBrains Mono
-   Chinese rain:   Noto Serif TC (Song / woodblock style)
+   Chinese rain:   FangSong Rain (subset)
    Color: pale ivory paper, deep ink-blue, garnet accent.
    ============================================================ */
 
-/* Noto Serif TC stays on Google Fonts (huge CJK font; only used by the
-   decorative rain, where FOUT is invisible). */
-@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500&display=swap');
+@font-face {
+  font-family: "FangSong Rain";
+  font-style: normal; font-weight: 400; font-display: swap;
+  src: url("/assets/fonts/fangsong-rain-subset.woff2") format("woff2");
+}
 
 /* Zilla Slab and JetBrains Mono are self-hosted (woff2 in /assets/fonts). */
 @font-face {
@@ -49,8 +51,10 @@
 
 * { box-sizing: border-box; }
 
-/* Smooth cross-fade between pages where the browser supports it. */
-@view-transition { navigation: auto; }
+/* Page cross-fade is currently disabled. To re-enable, uncomment the line
+   below (it must stay at the top level — never inside a media query). */
+/* @view-transition { navigation: auto; } */
+::view-transition-group(root) { background: var(--paper); }
 ::view-transition-old(root),
 ::view-transition-new(root) { animation-duration: 0.7s; }
 
@@ -78,14 +82,8 @@ body {
   content: "";
   position: absolute; inset: 0; z-index: -1;
   background: var(--paper);
-  -webkit-mask:
-    linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
-    linear-gradient(to bottom, #000 0, #000 calc(100% - 40px), transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask:
-    linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
-    linear-gradient(to bottom, #000 0, #000 calc(100% - 40px), transparent 100%);
-  mask-composite: intersect;
+  -webkit-mask: linear-gradient(to bottom, #000 0, #000 calc(100% - 40px), transparent 100%);
+  mask: linear-gradient(to bottom, #000 0, #000 calc(100% - 40px), transparent 100%);
 }
 .site-header .wrap {
   display: flex; align-items: baseline; justify-content: space-between;
@@ -147,10 +145,8 @@ ul.clean li { margin-bottom: 0.5rem; }
 
 
 /* ---------- Content panels floating above the rain ---------- */
-/* A solid ivory fill whose RECTANGULAR edges fade out on every side,
-   via a pseudo-element with a four-way linear-gradient mask.
-   The radial-gradient approach was abandoned: it makes an ellipse,
-   which is what produced the hard "line" at top and bottom. */
+/* Single vertical fade only. A second axis would need mask-composite,
+   which flashes black on Firefox under View Transitions — so we don't. */
 .panel { position: relative; padding: 3.4rem 4rem; }
 .panel::before {
   content: "";
@@ -158,21 +154,15 @@ ul.clean li { margin-bottom: 0.5rem; }
   inset: 0;
   z-index: -1;
   background: var(--paper);
-  /* fade the fill to transparent in a 48px margin on each edge */
-  -webkit-mask:
-    linear-gradient(to right,  transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask:
-    linear-gradient(to right,  transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
-    linear-gradient(to bottom, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
-  mask-composite: intersect;
+  -webkit-mask: linear-gradient(to bottom, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
+  mask: linear-gradient(to bottom, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%);
 }
 
 /* ---------- HERO ---------- */
 .hero { position: relative; }
 .page-rain {
   position: fixed;
+  background: transparent;
   top: 0; left: 0; right: 0;
   width: 100%; height: 100vh;
   z-index: -1;
@@ -239,14 +229,8 @@ code, pre { font-family: "JetBrains Mono", monospace; font-size: 0.85em; }
   content: "";
   position: absolute; inset: 0; z-index: -1;
   background: var(--paper);
-  -webkit-mask:
-    linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
-    linear-gradient(to top, #000 0, #000 calc(100% - 40px), transparent 100%);
-  -webkit-mask-composite: source-in;
-  mask:
-    linear-gradient(to right, transparent 0, #000 48px, #000 calc(100% - 48px), transparent 100%),
-    linear-gradient(to top, #000 0, #000 calc(100% - 40px), transparent 100%);
-  mask-composite: intersect;
+  -webkit-mask: linear-gradient(to top, #000 0, #000 calc(100% - 40px), transparent 100%);
+  mask: linear-gradient(to top, #000 0, #000 calc(100% - 40px), transparent 100%);
 }
 .site-footer .wrap { padding: 0 1.5rem; text-align: center; }
 .site-footer a { color: var(--muted); border: none; }
@@ -258,17 +242,12 @@ main.page-body { padding-top: 3.5rem; }
 
 /* ---------- Responsive ---------- */
 @media (max-width: 46rem) {
-  .hero-inner {
-    grid-template-columns: 1fr;
-
-  }
+  .hero-inner { grid-template-columns: 1fr; }
   .hero-photo { max-width: 200px; }
 }
 @media (max-width: 34rem) {
-  .hero-inner { }
   .site-header .wrap { flex-direction: column; align-items: flex-start; }
 }
-@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 
 /* Injected header/footer fade in (set by include.js) */
 #site-header, #site-footer { opacity: 0; transition: opacity .22s ease; }
@@ -276,26 +255,29 @@ main.page-body { padding-top: 3.5rem; }
 
 /* ---------- Entrance cascade (on page load only) ----------
    Direct children of the content column rise gently into place,
-   one after another. Short distance, quick ease, plays once. */
+   one after another. Plays once on load. Duration 0.8s — slower
+   than the previous 0.6s; delays widened to match. */
 @keyframes rise {
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 main .wrap > *,
 .hero-inner > * {
-  animation: rise 0.6s cubic-bezier(.22,.61,.36,1) backwards;
+  animation: rise 0.8s cubic-bezier(.22,.61,.36,1) backwards;
 }
-main .wrap > *:nth-child(1), .hero-inner > *:nth-child(1) { animation-delay: .05s; }
-main .wrap > *:nth-child(2), .hero-inner > *:nth-child(2) { animation-delay: .13s; }
-main .wrap > *:nth-child(3), .hero-inner > *:nth-child(3) { animation-delay: .21s; }
-main .wrap > *:nth-child(4) { animation-delay: .29s; }
-main .wrap > *:nth-child(5) { animation-delay: .37s; }
-main .wrap > *:nth-child(6) { animation-delay: .45s; }
-main .wrap > *:nth-child(7) { animation-delay: .53s; }
-main .wrap > *:nth-child(8) { animation-delay: .61s; }
-main .wrap > *:nth-child(n+9) { animation-delay: .69s; }
+main .wrap > *:nth-child(1), .hero-inner > *:nth-child(1) { animation-delay: .06s; }
+main .wrap > *:nth-child(2), .hero-inner > *:nth-child(2) { animation-delay: .17s; }
+main .wrap > *:nth-child(3), .hero-inner > *:nth-child(3) { animation-delay: .28s; }
+main .wrap > *:nth-child(4) { animation-delay: .39s; }
+main .wrap > *:nth-child(5) { animation-delay: .50s; }
+main .wrap > *:nth-child(6) { animation-delay: .61s; }
+main .wrap > *:nth-child(7) { animation-delay: .72s; }
+main .wrap > *:nth-child(8) { animation-delay: .83s; }
+main .wrap > *:nth-child(n+9) { animation-delay: .94s; }
+
+/* ---------- Reduced motion ---------- */
 @media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; }
   #site-header, #site-footer { opacity: 1; transition: none; }
-  @view-transition { navigation: none; }
   main .wrap > *, .hero-inner > * { animation: none; }
 }
