@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Code &amp; Text · Filippo Ugolini</title>
+<meta name="description" content="Computational text analysis and natural-language processing for premodern Chinese. Digital Humanities Fellow at Princeton's Center for Digital Humanities.">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body data-page="code">
+
+<!-- Shared header is injected here from /partials/header.html -->
+<header class="site-header" id="site-header"></header>
+
+<main class="page-body">
+  <div class="wrap">
+    <span class="eyebrow">Computational Text Analysis &amp; NLP</span>
+
+    <h1>Code &amp; Text</h1>
+
+    <p class="lead">I am a Digital Humanities Fellow at Princeton's Center for
+    Digital Humanities and a research assistant in the digital humanities. Beyond
+    that, I script, engineer, and solve — and create — problems for
+    their own sake: I am a tinkerer and a digital do-it-yourself enthusiast.</p>
+
+    <p>I am currently at work on two research projects.</p>
+
+    <h2>Fengliu and the ninth century</h2>
+    <p>The first grows directly out of my doctoral dissertation, which reads the
+    romantic narratives of the late Tang dynasty as sites of class tension. While
+    working through these stories, my interest was caught by a tremendously
+    elusive compound: <em>fengliu</em> 風流. Usually translated as "panache" or
+    "sprezzatura", it behaved through the late Tang as a floating signifier — a
+    word with no single referent.</p>
+
+    <p>Yet <em>fengliu</em> has a long and rich history reaching back to the Han
+    dynasty, and across the centuries it took on radically opposed meanings.
+    Having built, cleaned, and trained a corpus of texts spanning the Han through
+    the early Tang, I am applying a range of text-analysis techniques specific to
+    premodern Chinese, with the ultimate goal of tracing the semantic shifts of 
+    this compound. The project is nearing its final stages; I will release the
+    code on my GitHub before long, once it has had a thorough tidying.</p>
+
+    <h2>The material signature of woodblock prints</h2>
+    <p>The second is a collaboration with the Department of East Asian Studies at
+    Princeton. It sets out to recognise the material signature of woodblock
+    prints, and through it to trace their movement across regions and centuries.
+    My part is to build and label corpora of woodblock scans and to train models
+    that detect cracks, cuts, and other marks left by the block itself.</p>
+
+    <h2>Personal projects</h2>
+    <p>I also write code away from research, for the pleasure of building
+    my own software. Two projects I am fond of:</p>
+
+    <ul class="clean">
+      <li><strong>Vocabolario</strong> — a fast, lightweight desktop dictionary
+      with a GTK 3 interface, written in Python over an SQLite backend. Entries
+      are HTML, styled per-dictionary with CSS and JavaScript injections; the
+      interface is theme-aware and driven by config files, and the whole thing
+      ships from CLI prototype to a Debian <code>.deb</code> package. I built it
+      because I badly needed a good dictionary to write my dissertation.
+      <br><span class="muted">Python · SQLite · GTK 3 · WebKit2</span></li>
+
+      <li><strong>NewsScraper</strong> — an automated pipeline that logs in to a
+      handful of Italian newspapers, downloads the daily editions as PDF,
+      compresses them by up to 60%, and emails them to a list of recipients.
+      Credentials are Fernet-encrypted and stored apart from the key; it keeps a
+      timestamped log and a daily archive, and runs from a Raspberry Pi on cron.
+      It saves me twenty minutes every morning.
+      <br><span class="muted">Python · Selenium · Fernet · Ghostscript</span></li>
+
+      <li><strong>Evim</strong> a general-purpose PDF reader with an
+annotation layer</strong>, written from scratch in Python with PyQt — a
+scholar's tool, built because I spend my days reading PDFs and wanted one that
+behaved the way I think. What began as a modest prototype turned into a long
+education in everything that stands between "it renders" and "it renders
+smoothly." Getting zoom and scroll to feel fluid at high magnification meant
+walking straight into Python's harder corners: the Global Interpreter Lock (GIL),
+which forced the renderer out of a thread and into a separate process; the cost
+of moving rendered pixels across that process boundary, solved with shared
+memory and a double-buffer handshake; and, at extreme zoom, a tiling system that
+renders each page as a grid of fixed-size patches so the interface never blocks
+behind a single giant render. Along the way I fought — and eventually won — a
+small war with Python's <code>resource_tracker</code> over the lifecycle of those
+shared-memory blocks. It is still a work in progress, and I am learning as I go,
+but at normal zoom it already outpaces the standard Linux PDF readers, and at
+extreme zoom it holds its own against Preview and Acrobat. I intend to write the
+whole thing up properly before long.
+          <br><span class="muted">Python · PyQt · PyMuPDF </span>
+      </li>
+    </ul>
+
+    <p style="margin-top:2.4rem;">
+      <a href="https://github.com/fugolini">See more on GitHub &rarr;</a>
+    </p>
+  </div>
+</main>
+
+<!-- Shared footer is injected here from /partials/footer.html -->
+<footer class="site-footer" id="site-footer"></footer>
+
+<script src="/include.js"></script>
+</body>
+</html>
